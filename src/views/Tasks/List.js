@@ -4,7 +4,7 @@ import { getAllTask, addTask, deleteTaskById, deleteAllTasks, changeStatusTask, 
 import AddList from './AddList';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Todo.scss";
+import "./Task.scss";
 
 const List = () => {
     const [listTask, setListTask] = useState([]);
