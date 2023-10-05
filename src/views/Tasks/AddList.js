@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../Todos/Todo.scss"
+import "./Task.scss";
 
 const AddList = ({ onAddTask }) => {
     const [title, setTitle] = useState("")
