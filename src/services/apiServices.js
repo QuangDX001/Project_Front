@@ -1,7 +1,7 @@
 import axios from "../utils/axiosCustomize"
 
 const getAllTask = () => {
-    return axios.get("tasks")
+    return axios.get("v1/tasks")
 }
 
 const addTask = (title) => {
@@ -9,27 +9,27 @@ const addTask = (title) => {
         title: title,
     }
 
-    return axios.post("tasks/addTask", data)
+    return axios.post("v1/tasks/addTask", data)
 }
 
 const changeStatusTask = (taskId) => {
-    return axios.put(`tasks/${taskId}`);
+    return axios.put(`v1/tasks/${taskId}`);
 };
 
 const deleteTaskById = (taskId) => {
-    return axios.delete(`tasks/${taskId}`);
+    return axios.delete(`v1/tasks/${taskId}`);
 }
 
 const deleteAllTasks = () => {
-    return axios.delete("all")
+    return axios.delete("v1/all")
 }
 
 const deleteDoneTask = () => {
-    return axios.delete("completed")
+    return axios.delete("v1/completed")
 }
 
 const editTaskDone = (taskId, title) => {
-    return axios.put(`tasks/updateTask/${taskId}`, { title })
+    return axios.put(`v1/tasks/updateTask/${taskId}`, { title })
 }
 
 export {

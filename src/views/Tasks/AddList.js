@@ -23,7 +23,7 @@ const AddList = ({ onAddTask }) => {
 
     const handleSubmit = () => {
         if (!title) {
-            toast.configure();
+            //toast.configure();
             toast.error("Please input a title first!")
             return
         }
