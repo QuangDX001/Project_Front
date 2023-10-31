@@ -1,0 +1,16 @@
+body {
+   margin: 0;
+}
+
+code {
+   /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
+}
+* {
+   /* font-family: " Sans", sans-serif; */
+   /* font-family: "poppins", sans-serif; */
+}
+.active > .page-link,
+.page-link.active {
+   z-index: 0 !important;
+}

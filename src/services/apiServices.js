@@ -32,6 +32,65 @@ const editTaskDone = (taskId, title) => {
     return axios.put(`v1/tasks/updateTask/${taskId}`, { title })
 }
 
+
+const postLogin = (username, password) => {
+    return axios.post(`auth/login`, {
+        username: username + "",
+        password: password + "",
+    });
+};
+const postSignup = (username, password, email) => {
+    return axios.post(`auth/signup`, {
+        username: username + "",
+        password: password + "",
+        email: email + "",
+    })
+}
+
+const getProfile = (username) => {
+    return axios.get(`crud/getProfile/${username}`)
+}
+
+const getAllUsers = () => {
+    return axios.get(`crud/paging`)
+}
+
+const getCombineUsers = (pageNo, pageSize, sortBy, sortDir) => {
+    return axios.get(
+        `crud/paging?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
+    )
+}
+
+const changePassword = (id, pass, newPass, confirmPass) => {
+    let data = {
+        password: pass,
+        newPassword: newPass,
+        confirmNewPassword: confirmPass,
+    }
+
+    return axios.put(`crud/changePassword/${id}`, data)
+}
+
+const resetPassword = (email) => {
+    return axios.post(`crud/sendForgotPassword?email=${email}`)
+}
+
+const putProfile = (id, firstName, lastName, address, phone) => {
+    let data = {
+        firstName,
+        lastName,
+        address,
+        phone,
+    }
+
+    return axios.put(`crud/updateUser/${id}`, {
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        phone: phone,
+    })
+}
+
 export {
     getAllTask,
     addTask,
@@ -39,5 +98,13 @@ export {
     deleteTaskById,
     deleteAllTasks,
     deleteDoneTask,
-    editTaskDone
+    editTaskDone,
+    postLogin,
+    postSignup,
+    getProfile,
+    getAllUsers,
+    getCombineUsers,
+    changePassword,
+    resetPassword,
+    putProfile
 };

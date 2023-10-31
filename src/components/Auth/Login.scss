@@ -1,0 +1,86 @@
+.login-container {
+    .login-header {
+        height    : 45px;
+        text-align: right;
+
+    }
+
+    .login-title {
+        font-size : 28px;
+        text-align: center;
+        padding   : 20px 0px;
+
+    }
+
+    .login-welcome {
+        text-align: center;
+        font-size : 18px;
+        padding   : 10px 0;
+    }
+
+    .login-content {
+        padding: 8px;
+
+        input {
+            margin-bottom: 15px 0;
+        }
+
+        .forgot-password {
+            font-size  : 18px;
+            font-weight: 630;
+            color      : #176f9b;
+        }
+
+        .alter-option {
+            display        : flex;
+            justify-content: space-between;
+        }
+
+        .btn-submit {
+            // padding: 10px 30px;
+            border        : none;
+            border-radius : 5px;
+            background    : rgba(0, 0, 0, 0.8);
+            color         : white;
+            width         : 100%;
+            font-size     : 30px;
+            // line-height: 30px;
+        }
+
+        button {
+            width           : 100%;
+            height          : 44px;
+            border          : none;
+            border-radius   : 8px;
+            margin          : 20px 0;
+            color           : white;
+            font-size       : 24px;
+            background-color: black;
+        }
+
+        button:disabled {
+            background-color: cadetblue;
+            color           : black
+        }
+
+        .back {
+            cursor: pointer;
+        }
+
+        .spin {
+            margin   : 2px;
+            top      : 2px;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            from {
+                transform: scale(1) rotate(0deg);
+            }
+
+            to {
+                transform: scale(1) rotate(360deg);
+            }
+        }
+    }
+}
