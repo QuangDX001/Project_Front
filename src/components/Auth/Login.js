@@ -30,6 +30,9 @@ const Login = () => {
             setLoading(false);
 
             dispatch(doLogin(data));
+        } else if (data.status === 401) {
+            setLoading(false);
+            toast.error(data.data.message);
         } else {
             setLoading(false);
             // toast.error("Có lỗi xảy ra trong quá trình đăng nhập");

@@ -75,6 +75,15 @@ const resetPassword = (email) => {
     return axios.post(`crud/sendForgotPassword?email=${email}`)
 }
 
+const resetPasswordAdmin = (username, newPassword) => {
+    let data = {
+        newPassword: newPassword
+    }
+    return axios.put(`crud/resetPasswordForAdmin/${username}`, {
+        newPassword: newPassword
+    })
+}
+
 const putProfile = (id, firstName, lastName, address, phone) => {
     let data = {
         firstName,
@@ -91,6 +100,9 @@ const putProfile = (id, firstName, lastName, address, phone) => {
     })
 }
 
+const putStatusUser = (id) => {
+    return axios.put(`crud/changeEnableStatus/${id}`)
+}
 export {
     getAllTask,
     addTask,
@@ -106,5 +118,7 @@ export {
     getCombineUsers,
     changePassword,
     resetPassword,
-    putProfile
+    putProfile,
+    putStatusUser,
+    resetPasswordAdmin
 };

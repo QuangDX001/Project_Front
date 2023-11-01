@@ -3,6 +3,8 @@ import { Form } from 'react-bootstrap'
 import TableAccPaginate from './TableAccPaginate'
 import { getCombineUsers } from '../../../services/apiServices'
 import "./ManageTable.scss"
+import ModalDisableAccount from './ModalDisableAccount'
+import ModalResetPass from './ModalResetPass'
 
 const ManageAccount = (pros) => {
     const PAGE_LIMIT = 1
@@ -14,6 +16,12 @@ const ManageAccount = (pros) => {
 
     const [listUser, setListUser] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+
+    const [showModalDisabled, setShowModalDisabled] = useState(false)
+    const [dataDisabled, setDataDisabled] = useState({})
+
+    const [showModalReset, setShowModalReset] = useState(false)
+    const [dataReset, setDataReset] = useState([])
     // const debouncedSearchTerm = useDebounce()
 
     const fetchListUser = async (page, size, sortBy, sortDir) => {
@@ -49,6 +57,15 @@ const ManageAccount = (pros) => {
         setCurrentPage(1)
     }
 
+    const handleDisabled = (value) => {
+        setDataDisabled(value)
+        setShowModalDisabled(true)
+    }
+
+    const handleReset = (item) => {
+        setDataReset(item)
+        setShowModalReset(true)
+    }
 
     return (
         <div className="manage-container p-3">
@@ -89,29 +106,33 @@ const ManageAccount = (pros) => {
                             sortBy={sortBy}
                             sortDir={sortDir}
                             setCurrentPage={setCurrentPage}
+                            fetchListUser={fetchListUser}
+                            handleDisabled={handleDisabled}
+                            handleReset={handleReset}
                         />
                     )}
                 </div>
             </div>
+            <div>
+                <ModalDisableAccount
+                    show={showModalDisabled}
+                    setShow={setShowModalDisabled}
+                    dataDisabled={dataDisabled}
+                    fetchListUser={fetchListUser}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
+                <ModalResetPass
+                    show={showModalReset}
+                    setShow={setShowModalReset}
+                    dataReset={dataReset}
+                    fetchListUser={fetchListUser}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
+            </div>
         </div>
     )
-}
-
-function useDebounce(value, delay) {
-    // State and setters for debounced value
-    const [debouncedValue, setDebouncedValue] = useState(value);
-
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedValue(value);
-        }, delay);
-
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [value, delay]);
-
-    return debouncedValue;
 }
 
 export default ManageAccount

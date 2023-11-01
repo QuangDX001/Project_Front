@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactPaginate from 'react-paginate'
 import { FiMinusCircle, FiMenu } from "react-icons/fi";
+import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
+import { MdSettingsBackupRestore } from "react-icons/md";
+import { GiPlainCircle } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
 
 const TableAccPaginate = (pros) => {
@@ -19,7 +22,8 @@ const TableAccPaginate = (pros) => {
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
                         <th scope="col">Role</th>
-                        <th scope="col">User Actions</th>
+                        <th scope="col" className='text-center'>Status</th>
+                        <th scope="col" className='text-center'>User Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,21 +35,34 @@ const TableAccPaginate = (pros) => {
                                     <td>{item.username}</td>
                                     <td>{item.email}</td>
                                     <td>{item.roles}</td>
+                                    <td className="text-center"
+                                    >
+                                        <GiPlainCircle color={`${item.enable ? "green" : "red"}`} />
 
-                                    <th className="actions">
-                                        <button
-                                            className="btn btn-danger"
-
+                                    </td>
+                                    <td className="d-flex justify-content-evenly">
+                                        <div
+                                            className=""
+                                            onClick={() => pros.handleReset(item)}
+                                            style={{
+                                                cursor: "pointer",
+                                            }}
                                         >
-                                            <FiMinusCircle />
-                                        </button>
-                                        <button
-                                            className="btn btn-warning"
-                                        //onClick={() => pros.handleClickUpdate(true, item)}
+                                            <MdSettingsBackupRestore />
+                                        </div>
+                                        <div
+                                            onClick={() => pros.handleDisabled(item)}
+                                            style={{
+                                                cursor: "pointer",
+                                            }}
                                         >
-                                            <FiMenu />
-                                        </button>
-                                    </th>
+                                            {item.enable ? (
+                                                <AiOutlineLock color="red" />
+                                            ) : (
+                                                <AiOutlineUnlock color="green" />
+                                            )}
+                                        </div>
+                                    </td>
                                 </tr>
 
                             )
