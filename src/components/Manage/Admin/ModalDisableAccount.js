@@ -14,7 +14,7 @@ const ModalDisableAccount = (pros) => {
         let res = await putStatusUser(item.id)
 
         if (res.status === 200) {
-            toast.success(`Change status of user ${dataDisabled.username} successfully`)
+            toast.success(`Change status of ${dataDisabled.username} successfully`)
         } else if (res.status === 409) {
             toast.error("You can not disable yourself")
         } else {

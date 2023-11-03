@@ -35,7 +35,7 @@ const Header = () => {
                         <NavLink className="nav-link" to={"/"}>
                             Homepage
                         </NavLink>
-                        {account.roles.includes("ROLE_ADMIN") ? (
+                        {account.roles.includes("ROLE_MORDERATOR") || account.roles.includes("ROLE_USER") ? (
                             <NavLink className="nav-link" to={"/task"}>
                                 Task
                             </NavLink>

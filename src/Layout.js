@@ -3,7 +3,6 @@ import App from './App'
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import List from './components/Tasks/List';
 import Home from './components/Home/Home';
 import ErrorPage from './components/Auth/ErrorPage';
 import PrivateRoute from './routes/PrivateRoute';
@@ -14,6 +13,7 @@ import Signup from './components/Auth/Signup';
 import Manage from './components/Manage/Manage';
 import ManageAccount from './components/Manage/Admin/ManageAccount';
 import ForgotPassword from './components/Auth/ForgotPassword';
+import ListTask from './components/Tasks/ListTask';
 const Layout = () => {
     return (
         <>
@@ -23,8 +23,9 @@ const Layout = () => {
                     <Route
                         path="/task"
                         element={
-                            <PrivateRoute acceptRole={[2, 3]}>
-                                <List />
+                            <PrivateRoute acceptRole={[1, 2]}>
+                                {/* <List /> */}
+                                <ListTask />
                             </PrivateRoute>
                         }
                     ></Route>

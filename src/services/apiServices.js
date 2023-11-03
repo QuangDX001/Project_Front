@@ -1,7 +1,7 @@
 import axios from "../utils/axiosCustomize"
 
-const getAllTask = () => {
-    return axios.get("v1/tasks")
+const getAllTask = (pageNo, pageSize, userId) => {
+    return axios.get(`v1/tasks?pageNo=${pageNo}&pageSize=${pageSize}&userId=${userId}`)
 }
 
 const addTask = (title) => {
@@ -16,20 +16,22 @@ const changeStatusTask = (taskId) => {
     return axios.put(`v1/tasks/${taskId}`);
 };
 
-const deleteTaskById = (taskId) => {
-    return axios.delete(`v1/tasks/${taskId}`);
+const deleteTaskById = (taskId, userId) => {
+    return axios.delete(`v1/tasks/${taskId}?userId=${userId}`);
 }
 
-const deleteAllTasks = () => {
-    return axios.delete("v1/all")
+const deleteAllTasks = (userId) => {
+    return axios.delete(`v1/all/${userId}`);
 }
 
-const deleteDoneTask = () => {
-    return axios.delete("v1/completed")
+const deleteDoneTask = (userId) => {
+    return axios.delete(`v1/completed/${userId}`)
 }
 
 const editTaskDone = (taskId, title) => {
-    return axios.put(`v1/tasks/updateTask/${taskId}`, { title })
+    return axios.put(`v1/tasks/updateTask/${taskId}`, {
+        title: title
+    })
 }
 
 

@@ -8,27 +8,12 @@ import { BiTask } from 'react-icons/bi'
 const AddList = ({ onAddTask }) => {
     const [title, setTitle] = useState("")
 
-    // const handleSubmit = async (list) => {
-
-    //     let res = await addTask(title)
-    //     console.log(res)
-
-
-    //     if (res.status === 200) {
-    //         toast.success("Add successfully")
-    //     } else {
-    //         toast.error("Something is wrong")
-    //     }
-
-    //     await list.fetchData();
-    // }
-
     const handleSubmit = () => {
-        if (!title) {
-            //toast.configure();
-            toast.error("Please input a title first!")
-            return
-        }
+        // if (!title) {
+        //     //toast.configure();
+        //     toast.error("Please input a title first!")
+        //     return
+        // }
 
         onAddTask(title)
         setTitle('')
@@ -38,9 +23,6 @@ const AddList = ({ onAddTask }) => {
         <div className="add-todo">
             <div className="input-field">
                 <span className="icon">
-                    {/* <button type="button" className="btn btn-input">
-                        <i className="fas fa-book"></i>
-                    </button> */}
                     <BiTask />
                 </span>
                 <span>
