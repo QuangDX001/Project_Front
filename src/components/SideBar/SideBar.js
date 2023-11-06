@@ -11,7 +11,7 @@ import {
     SidebarFooter,
     SidebarContent
 } from 'react-pro-sidebar';
-import { FaTachometerAlt, FaGem, FaRegLaughWink, FaHeart, FaList } from "react-icons/fa";
+import { FaRegLaughWink, FaHeart } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 
 const SideBar = (props) => {

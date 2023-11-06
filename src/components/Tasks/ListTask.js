@@ -5,10 +5,8 @@ import { addTask, deleteAllTasks, deleteDoneTask, getAllTask } from '../../servi
 import { useEffect } from 'react'
 import TableTaskList from './TableTaskList'
 import './Task.scss'
-import { done } from 'nprogress'
 import { toast } from 'react-toastify'
 import AddList from './AddList'
-import { ToggleButton } from 'react-bootstrap'
 
 const ListTaskv2 = () => {
 

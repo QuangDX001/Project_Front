@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Task.scss";
 import { Button } from 'react-bootstrap';

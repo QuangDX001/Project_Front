@@ -53,9 +53,7 @@ const Login = () => {
         <div className="wr_lg ">
             <div className="container_lg d-flex">
                 <div className="text-box w-50 m-auto">
-
                     <h1>Home</h1>
-                    {/* <h3>Hệ thống quản lý chấm công </h3> */}
                     <div className="lg_row">
                         <p onClick={() => navigate("/")}>Go To</p>
                     </div>

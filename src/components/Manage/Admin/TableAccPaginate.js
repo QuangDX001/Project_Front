@@ -1,10 +1,8 @@
 import React from 'react'
-import ReactPaginate from 'react-paginate'
-import { FiMinusCircle, FiMenu } from "react-icons/fi";
+import ReactPaginate from 'react-paginate';
 import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
 import { MdSettingsBackupRestore } from "react-icons/md";
 import { GiPlainCircle } from "react-icons/gi";
-import { useNavigate } from 'react-router-dom';
 
 const TableAccPaginate = (pros) => {
     const { listUser, pageCount, sortBy, sortDir } = pros

@@ -78,21 +78,21 @@ const resetPassword = (email) => {
 }
 
 const resetPasswordAdmin = (username, newPassword) => {
-    let data = {
-        newPassword: newPassword
-    }
+    // let data = {
+    //     newPassword: newPassword
+    // }
     return axios.put(`crud/resetPasswordForAdmin/${username}`, {
         newPassword: newPassword
     })
 }
 
 const putProfile = (id, firstName, lastName, address, phone) => {
-    let data = {
-        firstName,
-        lastName,
-        address,
-        phone,
-    }
+    // let data = {
+    //     firstName,
+    //     lastName,
+    //     address,
+    //     phone,
+    // }
 
     return axios.put(`crud/updateUser/${id}`, {
         firstName: firstName,

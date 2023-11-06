@@ -1,5 +1,4 @@
 import axios from 'axios';
-import React from 'react'
 import nProgress from "nprogress";
 import { store } from "../redux/store";
 nProgress.configure({
