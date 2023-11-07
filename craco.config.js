@@ -34,6 +34,7 @@ module.exports = {
                 );
                 return middlewares;
             },
+            historyApiFallback: true,
         };
         return devServerConfig;
     },
