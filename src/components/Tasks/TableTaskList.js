@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const TableTaskList = (pros) => {
 
-    const { listTask, pageCount, setCurrentPage } = pros
+    const { listTask, pageCount, setCurrentPage, fetchAPI } = pros
     const [editTask, setEditTask] = useState({});
     let isEmptyObj = Object.keys(editTask).length === 0;
 
@@ -37,7 +37,8 @@ const TableTaskList = (pros) => {
             const updatedTasks = listTask.map(item =>
                 (item.id === taskId ? { ...item, done: !item.done } : item))
             pros.setListTask(updatedTasks)
-
+            fetchAPI(pros.currentPage)
+            setCurrentPage(1)
         } else {
             toast.error("Something is wrong")
         }
@@ -49,6 +50,8 @@ const TableTaskList = (pros) => {
         if (res.status === 200) {
             toast.success('Delete successfully')
             pros.setListTask(currentTask)
+            fetchAPI(pros.currentPage)
+            setCurrentPage(1)
         } else {
             toast.error("Something is wrong")
         }

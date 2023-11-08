@@ -70,7 +70,7 @@ const SideBar = (props) => {
                             >
                                 <MenuItem>
                                     Mod Board
-                                    <Link to={"/manage/manage-staff"} />
+                                    <Link to={"/manage/manage-tasks"} />
                                 </MenuItem>
                             </SubMenu>
                         </>

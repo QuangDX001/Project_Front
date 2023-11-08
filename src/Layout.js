@@ -14,6 +14,7 @@ import Manage from './components/Manage/Manage';
 import ManageAccount from './components/Manage/Admin/ManageAccount';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ListTask from './components/Tasks/ListTask';
+import ManageTask from './components/Manage/Mod/ManageTask';
 const Layout = () => {
     return (
         <>
@@ -45,7 +46,14 @@ const Layout = () => {
                                 </PrivateRoute>
                             }
                         />
-                        {/* <Route path="manage-staff" /> */}
+                        <Route
+                            path="manage-tasks"
+                            element={
+                                <PrivateRoute acceptRole={[2]}>
+                                    <ManageTask />
+                                </PrivateRoute>
+                            }
+                        />
                     </Route>
                     <Route path="/profile/:username" element={<Profile />}></Route>
                     <Route path="/signup" element={<Signup />}></Route>

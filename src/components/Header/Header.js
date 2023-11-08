@@ -41,7 +41,7 @@ const Header = () => {
                             </NavLink>
                         ) : null}
                         {account.roles.includes("ROLE_MODERATOR") && (
-                            <NavLink className="nav-link" to={"/manage/manage-staff"}>
+                            <NavLink className="nav-link" to={"/manage/manage-tasks"}>
                                 Mod Content
                             </NavLink>
                         )}

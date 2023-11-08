@@ -140,11 +140,12 @@ const ListTaskv2 = () => {
                         pageCount={pageCount}
                         currentPage={currentPage}
                         setListTask={setListTask}
+                        fetchAPI={fetchAPI}
                     />
                 ) : (
                     <>
                         <div className="d-flex justify-content-center">
-                            Đang tải dữ liệu ...
+                            Loading ...
                         </div>
                     </>
                 )}

@@ -3,9 +3,12 @@ import ReactPaginate from 'react-paginate';
 import { AiOutlineLock, AiOutlineUnlock } from "react-icons/ai";
 import { MdSettingsBackupRestore } from "react-icons/md";
 import { GiPlainCircle } from "react-icons/gi";
+import { FiSearch } from "react-icons/fi";
+import { useNavigate } from 'react-router-dom';
 
 const TableAccPaginate = (pros) => {
     const { listUser, pageCount, sortBy, sortDir } = pros
+    const navigate = useNavigate()
     const handlePageClick = async (event) => {
         pros.setCurrentPage(event.selected + 1)
         await pros.fetchListUser(event.selected + 1, 1, sortBy, sortDir)
@@ -59,6 +62,13 @@ const TableAccPaginate = (pros) => {
                                             ) : (
                                                 <AiOutlineUnlock color="green" />
                                             )}
+                                        </div>
+                                        <div
+                                            onClick={() => {
+                                                navigate(`/profile/${item.username}`)
+                                            }}
+                                        >
+                                            <FiSearch />
                                         </div>
                                     </td>
                                 </tr>
