@@ -1,10 +1,33 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom';
+import { getStatus } from '../services/apiServices';
+import { updateUser } from '../redux/action/userAction';
 
 const PrivateRoute = (pros) => {
     const account = useSelector((state) => state.user.account)
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated)
+    const isEnabled = useSelector((state) => state.status.userStatus.enable)
+    const dispatch = useDispatch();
+    console.log('Enable:', isEnabled);
+
+    useEffect(() => {
+        const fetchStatus = async () => {
+            try {
+                const userStatus = await getStatus(pros.userId)
+                dispatch(updateUser(userStatus))
+            } catch (err) {
+                console.error("Error fetching status", err)
+            }
+        }
+
+        if (isAuthenticated) {
+            fetchStatus();
+        }
+
+    }, [dispatch, pros.userId, isAuthenticated])
+
     const roles = {
         "ROLE_USER": 1,
         "ROLE_MODERATOR": 2,
@@ -29,6 +52,8 @@ const PrivateRoute = (pros) => {
     // console.log(pros, "ABC", getRoleId(99));
     const flag = pros.acceptRole.includes(getRole(account.roles));
     if (!flag) return <Navigate to="/error-authe"></Navigate>;
+    if (isEnabled === false) return <Navigate to="/error-authe"></Navigate>;
+
     if (isAuthenticated === false) {
         return <Navigate to="/login"></Navigate>;
     }

@@ -2,9 +2,12 @@ import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { putStatusUser } from '../../../services/apiServices'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../../../redux/action/userAction'
 
 const ModalDisableAccount = (pros) => {
     const { show, setShow, dataDisabled, PAGE_LIMIT } = pros
+    const dispatch = useDispatch()
 
     const handleClose = () => {
         setShow(false)
@@ -12,13 +15,14 @@ const ModalDisableAccount = (pros) => {
 
     const handleConfirm = async (item) => {
         let res = await putStatusUser(item.id)
-
+        console.log("change stat >>> ", res)
         if (res.status === 200) {
             toast.success(`Change status of ${dataDisabled.username} successfully`)
+            // dispatch(updateUser(res))
         } else if (res.status === 409) {
             toast.error("You can not disable yourself")
         } else {
-            Object.values(res.data.error).map((item, index) => {
+            Object.values(res.data.message).map((item, index) => {
                 toast.error(item)
             })
         }

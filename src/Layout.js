@@ -15,7 +15,12 @@ import ManageAccount from './components/Manage/Admin/ManageAccount';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ListTask from './components/Tasks/ListTask';
 import ManageTask from './components/Manage/Mod/ManageTask';
+import { useSelector } from 'react-redux';
 const Layout = () => {
+
+    const account = useSelector((state) => state.user.account)
+    const userId = account.id;
+
     return (
         <>
             <Routes>
@@ -24,7 +29,7 @@ const Layout = () => {
                     <Route
                         path="/task"
                         element={
-                            <PrivateRoute acceptRole={[1, 2]}>
+                            <PrivateRoute acceptRole={[1, 2]} userId={userId}>
                                 {/* <List /> */}
                                 <ListTask />
                             </PrivateRoute>

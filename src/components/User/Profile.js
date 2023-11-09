@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getProfile } from '../../services/apiServices'
 import LetterAvatar from './LetterAvatar';
 import "./Profile.scss";
@@ -9,6 +9,7 @@ import ModalUpdateProfile from './ModalUpdateProfile';
 
 const Profile = (pros) => {
     const account = useSelector((state) => state.user.account)
+    const isEnabled = useSelector((state) => state.status.userStatus.enable)
     const [userData, setUserData] = useState([])
 
     const [showCP, setShowCP] = useState(false)
@@ -34,6 +35,8 @@ const Profile = (pros) => {
     useEffect(() => {
         fetchProfile()
     }, [userNameParams])
+
+    if (isEnabled === false) return <Navigate to="/error-authe"></Navigate>
 
     const handleClickCP = (value, item) => {
         setShowCP(value)

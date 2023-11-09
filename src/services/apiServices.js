@@ -53,6 +53,10 @@ const getProfile = (username) => {
     return axios.get(`crud/getProfile/${username}`)
 }
 
+const getStatus = (userId) => {
+    return axios.get(`crud/id/${userId}`)
+}
+
 const getAllUsers = () => {
     return axios.get(`crud/paging`)
 }
@@ -122,5 +126,6 @@ export {
     resetPassword,
     putProfile,
     putStatusUser,
-    resetPasswordAdmin
+    resetPasswordAdmin,
+    getStatus,
 };

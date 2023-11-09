@@ -96,7 +96,7 @@ const Login = () => {
                                 justifyContent: "space-between"
                             }}
                         >
-                            <span className="signup" onClick={() => navigate("/signup")}>
+                            {/* <span className="signup" onClick={() => navigate("/signup")}>
                                 <label
                                     style={{
                                         cursor: "pointer",
@@ -104,7 +104,7 @@ const Login = () => {
                                 >
                                     Don't have an account yet?
                                 </label>
-                            </span>
+                            </span> */}
                             <span className="forgot-password" onClick={() => navigate("/forgot-password")}>
                                 <label
                                     style={{

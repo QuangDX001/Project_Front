@@ -7,15 +7,15 @@ const INITIAL_STATE = {
         email: "",
         token: "",
         roles: "",
+        enable: "",
     },
     isAuthenticated: false,
 }
 
-
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case FETCH_LOGIN_SUCCESS:
-            //console.log(">>>action: ", action);
+
             return {
                 ...state,
                 account: {
@@ -24,6 +24,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     email: action?.payload?.data?.userDto?.email,
                     roles: action?.payload?.data?.roles,
                     token: action?.payload?.data?.token,
+                    enable: action?.payload?.data?.userDto?.enable,
                 },
                 isAuthenticated: true,
             };
@@ -37,6 +38,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     password: action?.payload?.dataSignup?.password,
                     email: action?.payload?.dataSignup?.email,
                     roles: action?.payload?.dataSignup?.roles,
+                    enable: action?.payload?.dataSignup?.enable,
                 },
                 isAuthenticated: false,
             };
@@ -49,6 +51,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     email: "",
                     token: "",
                     roles: "",
+                    enable: "",
                 },
                 isAuthenticated: false,
             };
@@ -57,4 +60,4 @@ const userReducer = (state = INITIAL_STATE, action) => {
     }
 }
 
-export default userReducer
+export default userReducer 

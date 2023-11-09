@@ -14,7 +14,7 @@ const Header = () => {
     }
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     const account = useSelector((state) => state.user.account);
-    console.log(">>>acc", account);
+    //console.log(">>>acc", account);
     const handleLogout = () => {
         //console.log('Logout')
         dispatch(doLogOut())
