@@ -22,9 +22,11 @@ const PrivateRoute = (pros) => {
             }
         }
 
-        if (isAuthenticated) {
-            fetchStatus();
-        }
+        // if (isAuthenticated) {
+        //     fetchStatus();
+        // }
+
+        fetchStatus()
 
     }, [dispatch, pros.userId, isAuthenticated])
 

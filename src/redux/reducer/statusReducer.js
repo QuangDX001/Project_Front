@@ -12,7 +12,7 @@ const STATUS_STATE = {
 const statusReducer = (state = STATUS_STATE, action) => {
     switch (action.type) {
         case UPDATE_STATUS:
-            console.log(">>>action: ", action);
+            //console.log(">>>action: ", action);
             return {
                 ...state,
                 userStatus: {

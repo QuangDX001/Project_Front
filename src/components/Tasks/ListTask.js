@@ -8,6 +8,7 @@ import './Task.scss'
 import { toast } from 'react-toastify'
 import AddList from './AddList'
 import { Navigate } from 'react-router-dom'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 const ListTaskv2 = () => {
 
@@ -79,8 +80,8 @@ const ListTaskv2 = () => {
     const handleAddTask = async (title) => {
         let res = await addTask(title)
         console.log(res)
-        //const addedTasks = res.data
-        //setListTask([...filteredTasks, addedTasks])
+        const addedTasks = res.data
+        setListTask([...filteredTasks, addedTasks])
 
         if (res.status === 200) {
             setCurrentPage(1)
@@ -92,6 +93,51 @@ const ListTaskv2 = () => {
             })
         }
     }
+
+    // const handleDrag = (result) => {
+    //     //console.log(result)
+    //     if (!result.destination) return;
+
+    //     const items = Array.from(filteredTasks);
+    //     const [reorderedItem] = items.splice(result.source.index, 1);
+    //     items.splice(result.destination.index, 0, reorderedItem);
+
+    //     setListTask(items);
+    // }
+
+    const handleDrag = (result) => {
+        //console.log(result)
+        if (!result.destination) return;
+
+        const sourceIndex = result.source.index;
+        const destinationIndex = result.destination.index;
+
+        // Get the dragged task
+        const draggedTask = filteredTasks[sourceIndex];
+
+        // Update the filtered task list without the dragged task
+        const updatedFilteredTasks = filteredTasks.filter((task, index) => index !== sourceIndex);
+
+        // Insert the dragged task at the destination index
+        updatedFilteredTasks.splice(destinationIndex, 0, draggedTask);
+
+        // Update the state with the new order
+        setListTask((prevList) => {
+            // Create a copy of the previous list
+            const newList = [...prevList];
+
+            // Find the index of the dragged task in the original list
+            const originalIndex = prevList.findIndex((task) => task.id === draggedTask.id);
+
+            // Remove the dragged task from its original position
+            newList.splice(originalIndex, 1);
+
+            // Insert the dragged task at the new position
+            newList.splice(destinationIndex, 0, draggedTask);
+
+            return newList;
+        });
+    };
 
     const msg = "Simple tasks"
     return (
@@ -128,28 +174,39 @@ const ListTaskv2 = () => {
                         className={`button ${filter === 'incomplete' ? 'active' : ''}`}
                         onClick={() => handleFilterChange("incomplete")}
                     >
-                        Incomplete
+                        Active
                     </button>
                 </div>
             </div>
 
             <div className='list-todo'>
-                {!loading ? (
-                    <TableTaskList
-                        listTask={filteredTasks}
-                        setCurrentPage={setCurrentPage}
-                        pageCount={pageCount}
-                        currentPage={currentPage}
-                        setListTask={setListTask}
-                        fetchAPI={fetchAPI}
-                    />
-                ) : (
-                    <>
-                        <div className="d-flex justify-content-center">
-                            Loading ...
-                        </div>
-                    </>
-                )}
+                <DragDropContext onDragEnd={handleDrag}>
+                    <Droppable droppableId="tasks">
+                        {(providedDroppable) => (
+                            <>
+                                {!loading ? (
+                                    <TableTaskList
+                                        listTask={filteredTasks}
+                                        setCurrentPage={setCurrentPage}
+                                        pageCount={pageCount}
+                                        currentPage={currentPage}
+                                        setListTask={setListTask}
+                                        droppableProvided={providedDroppable}
+                                    // droppableProps={provided.droppableProps}
+                                    // innerRef={provided.innerRef}
+                                    />
+                                ) : (
+                                    <>
+                                        <div className="d-flex justify-content-center">
+                                            Loading ...
+                                        </div>
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+
             </div>
             <div className="deletions">
                 <span>
