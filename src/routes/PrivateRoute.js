@@ -10,7 +10,7 @@ const PrivateRoute = (pros) => {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated)
     const isEnabled = useSelector((state) => state.status.userStatus.enable)
     const dispatch = useDispatch();
-    console.log('Enable:', isEnabled);
+    //console.log('Enable:', isEnabled);
 
     useEffect(() => {
         const fetchStatus = async () => {
@@ -22,9 +22,9 @@ const PrivateRoute = (pros) => {
             }
         }
 
-        // if (isAuthenticated) {
-        //     fetchStatus();
-        // }
+        if (isAuthenticated) {
+            fetchStatus();
+        }
 
         fetchStatus()
 

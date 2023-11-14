@@ -41,12 +41,21 @@ const postLogin = (username, password) => {
         password: password + "",
     });
 };
-const postSignup = (username, password, email) => {
-    return axios.post(`auth/signup`, {
-        username: username + "",
-        password: password + "",
-        email: email + "",
-    })
+const postSignup = (username, password, email, role, firstName, lastName, address, phone) => {
+    let data = {
+        username: username,
+        password: password,
+        email: email,
+        role: role,
+        accountAddDTO: {
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+            phone: phone,
+        }
+    }
+
+    return axios.post("auth/signup", data)
 }
 
 const getProfile = (username) => {

@@ -7,10 +7,9 @@ import TableTaskList from './TableTaskList'
 import './Task.scss'
 import { toast } from 'react-toastify'
 import AddList from './AddList'
-import { Navigate } from 'react-router-dom'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 
-const ListTaskv2 = () => {
+const ListTask = () => {
 
     const PAGE_LIMIT = 5
 
@@ -181,28 +180,32 @@ const ListTaskv2 = () => {
 
             <div className='list-todo'>
                 <DragDropContext onDragEnd={handleDrag}>
-                    <Droppable droppableId="tasks">
-                        {(providedDroppable) => (
-                            <>
-                                {!loading ? (
-                                    <TableTaskList
-                                        listTask={filteredTasks}
-                                        setCurrentPage={setCurrentPage}
-                                        pageCount={pageCount}
-                                        currentPage={currentPage}
-                                        setListTask={setListTask}
-                                        providedDroppable={providedDroppable}
-                                        innerRef={providedDroppable.innerRef}
-                                    />
-                                ) : (
-                                    <>
-                                        <div className="d-flex justify-content-center">
-                                            Loading ...
+                    <Droppable droppableId="tasks" >
+                        {(providedDroppable) => {
+                            //console.log(providedDroppable);
+                            return (
+                                <>
+                                    {!loading ? (
+                                        <div>
+                                            <TableTaskList
+                                                listTask={filteredTasks}
+                                                setCurrentPage={setCurrentPage}
+                                                pageCount={pageCount}
+                                                currentPage={currentPage}
+                                                setListTask={setListTask}
+                                                providedDroppable={providedDroppable}
+                                            />
                                         </div>
-                                    </>
-                                )}
-                            </>
-                        )}
+                                    ) : (
+                                        <>
+                                            <div className="d-flex justify-content-center">
+                                                Loading ...
+                                            </div>
+                                        </>
+                                    )}
+                                </>
+                            )
+                        }}
                     </Droppable>
                 </DragDropContext>
 
@@ -223,4 +226,4 @@ const ListTaskv2 = () => {
     )
 }
 
-export default ListTaskv2
+export default ListTask

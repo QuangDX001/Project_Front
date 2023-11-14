@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
 import { changeStatusTask, deleteTaskById, editTaskDone } from '../../services/apiServices';
@@ -7,7 +7,7 @@ import { Draggable } from '@hello-pangea/dnd';
 
 const TableTaskList = (pros) => {
 
-    const { listTask, pageCount, setCurrentPage, providedDroppable, innerRef } = pros
+    const { listTask, pageCount, setCurrentPage, providedDroppable } = pros
     const [editTask, setEditTask] = useState({});
     let isEmptyObj = Object.keys(editTask).length === 0;
 
@@ -86,75 +86,77 @@ const TableTaskList = (pros) => {
 
     return (
         <>
-            <ul className="tasks" ref={innerRef} {...providedDroppable.droppableProps}>
+            <ul className="tasks" ref={providedDroppable.innerRef} {...providedDroppable.droppableProps}>
                 {listTask && listTask.length > 0 &&
                     listTask.map((task, i) => {
                         return (
                             <Draggable key={task.id} draggableId={task.id.toString()} index={i}>
-                                {(providedDraggable) => (
-                                    <li ref={providedDraggable.innerRef} {...providedDraggable.draggableProps} {...providedDraggable.dragHandleProps} key={i}>
-                                        {isEmptyObj === true ? (
-                                            <>
-                                                <span className={task.done ? "completed" : "incomplete"}>
-                                                    {task.title}
-                                                </span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                {editTask.id === task.id ? (
-                                                    <span>
-                                                        <input
-                                                            type="text"
-                                                            value={editTask.title}
-                                                            onChange={handleOnChangeTitle}
-                                                        />
-                                                    </span>
-                                                ) : (
+                                {(providedDraggable) => {
+                                    return (
+                                        <li ref={providedDraggable.innerRef} {...providedDraggable.draggableProps} {...providedDraggable.dragHandleProps} key={i}>
+                                            {isEmptyObj === true ? (
+                                                <>
                                                     <span className={task.done ? "completed" : "incomplete"}>
                                                         {task.title}
                                                     </span>
-                                                )}
-                                            </>
-                                        )}
-                                        <></>
-                                        {isEmptyObj === false && editTask.id === task.id ? (
-                                            <span className="actions">
-                                                {/* edit task */}
-                                                <span className="save" onClick={() => handleEditTaskDone(task.id)}>
-                                                    <i className='fas fa-save me-3'></i>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {editTask.id === task.id ? (
+                                                        <span>
+                                                            <input
+                                                                type="text"
+                                                                value={editTask.title}
+                                                                onChange={handleOnChangeTitle}
+                                                            />
+                                                        </span>
+                                                    ) : (
+                                                        <span className={task.done ? "completed" : "incomplete"}>
+                                                            {task.title}
+                                                        </span>
+                                                    )}
+                                                </>
+                                            )}
+                                            <></>
+                                            {isEmptyObj === false && editTask.id === task.id ? (
+                                                <span className="actions">
+                                                    {/* edit task */}
+                                                    <span className="save" onClick={() => handleEditTaskDone(task.id)}>
+                                                        <i className='fas fa-save me-3'></i>
+                                                    </span>
+                                                    {/* cancel editing task */}
+                                                    <span className="cancel" onClick={handleCancelEditTask}>
+                                                        <i className='fas fa-backspace'></i>
+                                                    </span>
                                                 </span>
-                                                {/* cancel editing task */}
-                                                <span className="cancel" onClick={handleCancelEditTask}>
-                                                    <i className='fas fa-backspace'></i>
+                                            ) : (
+                                                <span className="actions">
+                                                    {/* {!task.done && */}
+                                                    <span className="checkboxes">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={task.done ? "checked" : ""}
+                                                            onChange={() => checkDoneTask(task.id)}
+                                                        />
+                                                    </span>
+                                                    {/* } */}
+                                                    <span
+                                                        className="edit"
+                                                        onClick={() => handleEditTask(task)}
+                                                    >
+                                                        <i className="fas fa-pen"></i>
+                                                    </span>
+                                                    <span
+                                                        className="delete"
+                                                        onClick={() => handleDeleteTask(task.id)}
+                                                    >
+                                                        <i className="fas fa-trash"></i>
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        ) : (
-                                            <span className="actions">
-                                                {/* {!task.done && */}
-                                                <span className="checkboxes">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={task.done ? "checked" : ""}
-                                                        onChange={() => checkDoneTask(task.id)}
-                                                    />
-                                                </span>
-                                                {/* } */}
-                                                <span
-                                                    className="edit"
-                                                    onClick={() => handleEditTask(task)}
-                                                >
-                                                    <i className="fas fa-pen"></i>
-                                                </span>
-                                                <span
-                                                    className="delete"
-                                                    onClick={() => handleDeleteTask(task.id)}
-                                                >
-                                                    <i className="fas fa-trash"></i>
-                                                </span>
-                                            </span>
-                                        )}
-                                    </li>
-                                )}
+                                            )}
+                                        </li>
+                                    )
+                                }}
                             </Draggable>
                         )
                     })

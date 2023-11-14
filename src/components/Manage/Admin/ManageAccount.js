@@ -5,6 +5,7 @@ import { getCombineUsers } from '../../../services/apiServices'
 import "./ManageTable.scss"
 import ModalDisableAccount from './ModalDisableAccount'
 import ModalResetPass from './ModalResetPass'
+import ModalAddAccount from './ModalAddAccount'
 
 const ManageAccount = (pros) => {
     const PAGE_LIMIT = 1
@@ -22,6 +23,9 @@ const ManageAccount = (pros) => {
 
     const [showModalReset, setShowModalReset] = useState(false)
     const [dataReset, setDataReset] = useState([])
+
+    const [showModalAdd, setShowModalAdd] = useState(false)
+
     // const debouncedSearchTerm = useDebounce()
 
     const fetchListUser = async (page, size, sortBy, sortDir) => {
@@ -46,6 +50,10 @@ const ManageAccount = (pros) => {
 
         fetchData()
     }, [sortBy, sortDir, currentPage])
+
+    const handleShowHideAddModal = (value) => {
+        setShowModalAdd(value)
+    }
 
     const handleClickOrder = (e) => {
         setSortDir(e.target.value)
@@ -84,15 +92,23 @@ const ManageAccount = (pros) => {
                             <option value="desc">Descending order</option>
                         </Form.Select>
                     </div>
-                    <div className="">
-                        <Form.Select
-                            aria-label="Default select example"
-                            value={sortBy}
-                            onChange={(e) => handleClickFilter(e)}
-                        >
-                            <option value="id">By ID</option>
-                            <option value="username">By Name</option>
-                        </Form.Select>
+                    <div>
+                        <div>
+                            <button className="border-0 btn btn-primary" onClick={() => setShowModalAdd(true)}>
+                                Add new account
+                            </button>
+                        </div>
+                        <div className="float-right w-6/12 mt-3">
+                            <Form.Select
+                                aria-label="Default select example"
+                                value={sortBy}
+                                onChange={(e) => handleClickFilter(e)}
+
+                            >
+                                <option value="id">By ID</option>
+                                <option value="username">By Name</option>
+                            </Form.Select>
+                        </div>
                     </div>
                 </div>
                 <div className="table-user mt-3">
@@ -114,6 +130,14 @@ const ManageAccount = (pros) => {
                 </div>
             </div>
             <div>
+                <ModalAddAccount
+                    PAGE_LIMIT={PAGE_LIMIT}
+                    show={showModalAdd}
+                    setShow={handleShowHideAddModal}
+                    fetchListUser={fetchListUser}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
                 <ModalDisableAccount
                     show={showModalDisabled}
                     setShow={setShowModalDisabled}

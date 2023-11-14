@@ -38,7 +38,7 @@ const Layout = () => {
                     <Route
                         path='/manage/'
                         element={
-                            <PrivateRoute acceptRole={[2, 3]}>
+                            <PrivateRoute acceptRole={[2, 3]} userId={userId}>
                                 <Manage />
                             </PrivateRoute>
                         }
@@ -46,7 +46,7 @@ const Layout = () => {
                         <Route
                             path="manage-account"
                             element={
-                                <PrivateRoute acceptRole={[3]}>
+                                <PrivateRoute acceptRole={[3]} userId={userId}>
                                     <ManageAccount />
                                 </PrivateRoute>
                             }
@@ -54,7 +54,7 @@ const Layout = () => {
                         <Route
                             path="manage-tasks"
                             element={
-                                <PrivateRoute acceptRole={[2]}>
+                                <PrivateRoute acceptRole={[2]} userId={userId}>
                                     <ManageTask />
                                 </PrivateRoute>
                             }
