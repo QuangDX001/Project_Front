@@ -185,8 +185,8 @@ const ListTask = () => {
                             //console.log(providedDroppable);
                             return (
                                 <>
-                                    {!loading ? (
-                                        <div>
+                                    <div ref={providedDroppable.innerRef}>
+                                        {!loading ? (
                                             <TableTaskList
                                                 listTask={filteredTasks}
                                                 setCurrentPage={setCurrentPage}
@@ -195,14 +195,14 @@ const ListTask = () => {
                                                 setListTask={setListTask}
                                                 providedDroppable={providedDroppable}
                                             />
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="d-flex justify-content-center">
-                                                Loading ...
-                                            </div>
-                                        </>
-                                    )}
+                                        ) : (
+                                            <>
+                                                <div className="d-flex justify-content-center">
+                                                    Loading ...
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
                                 </>
                             )
                         }}

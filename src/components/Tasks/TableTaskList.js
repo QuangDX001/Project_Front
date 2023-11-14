@@ -86,7 +86,7 @@ const TableTaskList = (pros) => {
 
     return (
         <>
-            <ul className="tasks" ref={providedDroppable.innerRef} {...providedDroppable.droppableProps}>
+            <ul className="tasks" {...providedDroppable.droppableProps}>
                 {listTask && listTask.length > 0 &&
                     listTask.map((task, i) => {
                         return (
