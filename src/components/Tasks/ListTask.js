@@ -8,7 +8,7 @@ import './Task.scss'
 import { toast } from 'react-toastify'
 import AddList from './AddList'
 import { Navigate } from 'react-router-dom'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 
 const ListTaskv2 = () => {
 
@@ -191,9 +191,8 @@ const ListTaskv2 = () => {
                                         pageCount={pageCount}
                                         currentPage={currentPage}
                                         setListTask={setListTask}
-                                        droppableProvided={providedDroppable}
-                                    // droppableProps={provided.droppableProps}
-                                    // innerRef={provided.innerRef}
+                                        providedDroppable={providedDroppable}
+                                        innerRef={providedDroppable.innerRef}
                                     />
                                 ) : (
                                     <>

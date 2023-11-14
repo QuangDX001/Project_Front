@@ -3,11 +3,11 @@ import ReactPaginate from 'react-paginate';
 import { useSelector } from 'react-redux';
 import { changeStatusTask, deleteTaskById, editTaskDone } from '../../services/apiServices';
 import { toast } from 'react-toastify';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 
 const TableTaskList = (pros) => {
 
-    const { listTask, pageCount, setCurrentPage, droppableProvided } = pros
+    const { listTask, pageCount, setCurrentPage, providedDroppable, innerRef } = pros
     const [editTask, setEditTask] = useState({});
     let isEmptyObj = Object.keys(editTask).length === 0;
 
@@ -86,7 +86,7 @@ const TableTaskList = (pros) => {
 
     return (
         <>
-            <ul className="tasks" ref={droppableProvided.innerRef} {...droppableProvided.droppableProps}>
+            <ul className="tasks" ref={innerRef} {...providedDroppable.droppableProps}>
                 {listTask && listTask.length > 0 &&
                     listTask.map((task, i) => {
                         return (
@@ -162,7 +162,7 @@ const TableTaskList = (pros) => {
                 {listTask && listTask.length === 0 && (
                     <h1 className="d-flex justify-content-center">No tasks available</h1>
                 )}
-                {droppableProvided.placeholder}
+                {providedDroppable.placeholder}
             </ul>
             <div className="mt-3 d-flex justify-content-center text-center">
                 <ReactPaginate
