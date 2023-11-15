@@ -1,7 +1,7 @@
 import axios from "../utils/axiosCustomize"
 
-const getAllTask = (pageNo, pageSize, userId) => {
-    return axios.get(`v1/tasks?pageNo=${pageNo}&pageSize=${pageSize}&userId=${userId}`)
+const getAllTask = (pageNo, pageSize, userId, filter) => {
+    return axios.get(`v1/tasks?pageNo=${pageNo}&pageSize=${pageSize}&userId=${userId}&filter=${filter}`)
 }
 
 const addTask = (title) => {

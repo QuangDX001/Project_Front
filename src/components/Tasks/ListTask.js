@@ -23,11 +23,11 @@ const ListTask = () => {
     const account = useSelector((state) => state.user.account)
     const userId = account.id
 
-    const fetchAPI = async (pageNo) => {
+    const fetchAPI = async (pageNo, filter) => {
         setLoading(true)
 
         try {
-            let res = await getAllTask(pageNo, PAGE_LIMIT, userId)
+            let res = await getAllTask(pageNo, PAGE_LIMIT, userId, filter)
             console.log(res)
 
             if (res.status === 200) {
@@ -41,8 +41,8 @@ const ListTask = () => {
     }
 
     useEffect(() => {
-        fetchAPI(currentPage)
-    }, [currentPage])
+        fetchAPI(currentPage, filter)
+    }, [currentPage, filter])
 
     const filteredTasks = filter === 'all'
         ? listTask
@@ -51,6 +51,7 @@ const ListTask = () => {
             : listTask.filter((list) => !list.done);
 
     const handleFilterChange = (newFilter) => {
+        fetchAPI(1, newFilter);
         setFilter(newFilter)
         setCurrentPage(1);
     }
