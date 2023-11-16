@@ -1,13 +1,14 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { addTask, deleteAllTasks, deleteDoneTask, getAllTask } from '../../services/apiServices'
+import { addTask, deleteAllTasks, deleteDoneTask, getAllNoPaging, getAllTask } from '../../services/apiServices'
 import { useEffect } from 'react'
 import TableTaskList from './TableTaskList'
 import './Task.scss'
 import { toast } from 'react-toastify'
 import AddList from './AddList'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
+import { useRef } from 'react'
 
 const ListTask = () => {
 
@@ -23,16 +24,19 @@ const ListTask = () => {
     const account = useSelector((state) => state.user.account)
     const userId = account.id
 
-    const fetchAPI = async (pageNo, filter) => {
+    const scrollableContainerRef = useRef(null);
+
+    const fetchAPI = async (filter) => {
         setLoading(true)
 
         try {
-            let res = await getAllTask(pageNo, PAGE_LIMIT, userId, filter)
+            //let res = await getAllTask(pageNo, PAGE_LIMIT, userId, filter)
+            let res = await getAllNoPaging(userId, filter)
             console.log(res)
 
             if (res.status === 200) {
-                setListTask(res.data.list)
-                setPageCount(res.data.allPages)
+                setListTask(res.data)
+                //setPageCount(res.data.allPages)
             }
         } catch (error) {
         } finally {
@@ -51,9 +55,11 @@ const ListTask = () => {
             : listTask.filter((list) => !list.done);
 
     const handleFilterChange = (newFilter) => {
-        fetchAPI(1, newFilter);
+        setListTask([]);
+        //fetchAPI(1, newFilter);
+        fetchAPI(newFilter);
         setFilter(newFilter)
-        setCurrentPage(1);
+        //setCurrentPage(1);
     }
 
     const handleDeleteDoneTask = async () => {
@@ -84,8 +90,8 @@ const ListTask = () => {
         setListTask([...filteredTasks, addedTasks])
 
         if (res.status === 200) {
-            setCurrentPage(1)
-            fetchAPI(currentPage)
+            //setCurrentPage(1)
+            fetchAPI()
             toast.success('Add successfully')
         } else {
             Object.values(res.data.detailedMessages).map((item, index) => {
@@ -93,17 +99,6 @@ const ListTask = () => {
             })
         }
     }
-
-    // const handleDrag = (result) => {
-    //     //console.log(result)
-    //     if (!result.destination) return;
-
-    //     const items = Array.from(filteredTasks);
-    //     const [reorderedItem] = items.splice(result.source.index, 1);
-    //     items.splice(result.destination.index, 0, reorderedItem);
-
-    //     setListTask(items);
-    // }
 
     const handleDrag = (result) => {
         //console.log(result)
@@ -135,9 +130,28 @@ const ListTask = () => {
             // Insert the dragged task at the new position
             newList.splice(destinationIndex, 0, draggedTask);
 
+            // Update local storage with the new order
+            updateLocalStorageOrder(newList);
+
             return newList;
-        });
-    };
+        })
+    }
+
+    const updateLocalStorageOrder = (tasks) => {
+        // Store the order of tasks in local storage
+        localStorage.setItem('taskOrder', JSON.stringify(tasks.map(task => task.id)));
+    }
+
+    // Retrieve the order from local storage on component mount
+    useEffect(() => {
+        const storedOrder = localStorage.getItem('taskOrder');
+        if (storedOrder) {
+            // Parse the stored order and update the task list accordingly
+            const orderArray = JSON.parse(storedOrder);
+            const orderedTasks = orderArray.map(id => listTask.find(task => task.id === id)).filter(Boolean);
+            setListTask(orderedTasks);
+        }
+    }, [])
 
     const msg = "Simple tasks"
     return (
@@ -179,14 +193,36 @@ const ListTask = () => {
                 </div>
             </div>
 
-            <div className='list-todo'>
+            <div className='list-todo' ref={scrollableContainerRef}>
                 <DragDropContext onDragEnd={handleDrag}>
-                    <Droppable droppableId="tasks" >
+                    <Droppable droppableId="tasks"
+                        renderClone={(provided, snapshot, rubric) => (
+                            <div
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                                style={{
+                                    ...provided.draggableProps.style,
+                                    border: snapshot.isDragging ? 'solid 2px #d0d0d0' : '',
+                                    padding: snapshot.isDragging ? '.5em .8em .5em .5em' : ''
+                                }}
+                                className={filteredTasks[rubric.source.index].done ? 'completed' : 'incomplete'}
+                            >
+                                {filteredTasks[rubric.source.index].title}
+                            </div>
+                        )}
+
+                    >
                         {(providedDroppable) => {
                             //console.log(providedDroppable);
                             return (
                                 <>
-                                    <div ref={providedDroppable.innerRef}>
+                                    <div
+                                        ref={(el) => {
+                                            providedDroppable.innerRef(el)
+                                            scrollableContainerRef.current = el
+                                        }}
+                                    >
                                         {!loading ? (
                                             <TableTaskList
                                                 listTask={filteredTasks}

@@ -166,7 +166,7 @@ const TableTaskList = (pros) => {
                 )}
                 {providedDroppable.placeholder}
             </ul>
-            <div className="mt-3 d-flex justify-content-center text-center">
+            {/* <div className="mt-3 d-flex justify-content-center text-center">
                 <ReactPaginate
                     nextLabel="Next page>"
                     onPageChange={handlePageClick}
@@ -188,7 +188,7 @@ const TableTaskList = (pros) => {
                     renderOnZeroPageCount={null}
                     forcePage={pros.currentPage - 1}
                 />
-            </div>
+            </div> */}
         </>
     )
 }

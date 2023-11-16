@@ -4,6 +4,10 @@ const getAllTask = (pageNo, pageSize, userId, filter) => {
     return axios.get(`v1/tasks?pageNo=${pageNo}&pageSize=${pageSize}&userId=${userId}&filter=${filter}`)
 }
 
+const getAllNoPaging = (userId, filter) => {
+    return axios.get(`v1/tasks?userId=${userId}&filter=${filter}`)
+}
+
 const addTask = (title) => {
     let data = {
         title: title,
@@ -120,6 +124,7 @@ const putStatusUser = (id) => {
 }
 export {
     getAllTask,
+    getAllNoPaging,
     addTask,
     changeStatusTask,
     deleteTaskById,
