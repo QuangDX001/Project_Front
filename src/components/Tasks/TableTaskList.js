@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import ReactPaginate from 'react-paginate';
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { changeStatusTask, deleteTaskById, editTaskDone } from '../../services/apiServices';
 import { toast } from 'react-toastify';
@@ -7,16 +6,12 @@ import { Draggable } from '@hello-pangea/dnd';
 
 const TableTaskList = (pros) => {
 
-    const { listTask, pageCount, setCurrentPage, providedDroppable } = pros
+    const { listTask, providedDroppable } = pros
     const [editTask, setEditTask] = useState({});
     let isEmptyObj = Object.keys(editTask).length === 0;
 
     const account = useSelector((state) => state.user.account)
     const userId = account.id
-
-    const handlePageClick = async (event) => {
-        await setCurrentPage(event.selected + 1);
-    }
 
     const handleEditTask = (task) => {
         setEditTask(task)
@@ -166,29 +161,6 @@ const TableTaskList = (pros) => {
                 )}
                 {providedDroppable.placeholder}
             </ul>
-            {/* <div className="mt-3 d-flex justify-content-center text-center">
-                <ReactPaginate
-                    nextLabel="Next page>"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={3}
-                    marginPagesDisplayed={2}
-                    pageCount={pageCount}
-                    previousLabel="<Previous page"
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
-                    breakLabel="..."
-                    breakClassName="page-item"
-                    breakLinkClassName="page-link"
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    renderOnZeroPageCount={null}
-                    forcePage={pros.currentPage - 1}
-                />
-            </div> */}
         </>
     )
 }

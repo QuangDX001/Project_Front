@@ -5,7 +5,7 @@ const getAllTask = (pageNo, pageSize, userId, filter) => {
 }
 
 const getAllNoPaging = (userId, filter) => {
-    return axios.get(`v1/tasks?userId=${userId}&filter=${filter}`)
+    return axios.get(`v1/tasks?userId=${userId}`)
 }
 
 const addTask = (title) => {

@@ -10,7 +10,7 @@ const ErrorAuth = () => {
    const handleLogOut = () => {
       //console.log("Logout");
       dispatch(doLogOut());
-      toast.success("Đăng xuất thành công");
+      toast.success("Logout Success");
       navigate("/login");
    };
    return (

@@ -6,7 +6,7 @@ const STATUS_STATE = {
         roles: "",
         enable: "",
     },
-    isAuthenticated: true,
+    isAuthenticated: "",
 }
 
 const statusReducer = (state = STATUS_STATE, action) => {

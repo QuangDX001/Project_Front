@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { addTask, deleteAllTasks, deleteDoneTask, getAllNoPaging, getAllTask } from '../../services/apiServices'
+import { addTask, deleteAllTasks, deleteDoneTask, getAllNoPaging } from '../../services/apiServices'
 import { useEffect } from 'react'
 import TableTaskList from './TableTaskList'
 import './Task.scss'
@@ -12,11 +12,7 @@ import { useRef } from 'react'
 
 const ListTask = () => {
 
-    const PAGE_LIMIT = 5
-
     const [listTask, setListTask] = useState([])
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageCount, setPageCount] = useState(1);
 
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState('all');
@@ -24,19 +20,17 @@ const ListTask = () => {
     const account = useSelector((state) => state.user.account)
     const userId = account.id
 
-    const scrollableContainerRef = useRef(null);
+    const scrollableContainerRef = useRef(null)
 
-    const fetchAPI = async (filter) => {
+    const fetchAPI = async () => {
         setLoading(true)
 
         try {
-            //let res = await getAllTask(pageNo, PAGE_LIMIT, userId, filter)
-            let res = await getAllNoPaging(userId, filter)
+            let res = await getAllNoPaging(userId)
             console.log(res)
 
             if (res.status === 200) {
                 setListTask(res.data)
-                //setPageCount(res.data.allPages)
             }
         } catch (error) {
         } finally {
@@ -45,8 +39,8 @@ const ListTask = () => {
     }
 
     useEffect(() => {
-        fetchAPI(currentPage, filter)
-    }, [currentPage, filter])
+        fetchAPI()
+    }, [])
 
     const filteredTasks = filter === 'all'
         ? listTask
@@ -55,11 +49,7 @@ const ListTask = () => {
             : listTask.filter((list) => !list.done);
 
     const handleFilterChange = (newFilter) => {
-        setListTask([]);
-        //fetchAPI(1, newFilter);
-        fetchAPI(newFilter);
         setFilter(newFilter)
-        //setCurrentPage(1);
     }
 
     const handleDeleteDoneTask = async () => {
@@ -84,20 +74,40 @@ const ListTask = () => {
     }
 
     const handleAddTask = async (title) => {
-        let res = await addTask(title)
-        console.log(res)
-        const addedTasks = res.data
-        setListTask([...filteredTasks, addedTasks])
+        try {
+            let res = await addTask(title)
+            console.log(res)
+            if (res.status === 200) {
 
-        if (res.status === 200) {
-            //setCurrentPage(1)
-            fetchAPI()
-            toast.success('Add successfully')
-        } else {
-            Object.values(res.data.detailedMessages).map((item, index) => {
-                toast.error(item)
-            })
+                const addedTasks = res.data
+
+                // Update the task list with the added task
+                setListTask((prevTasks) => {
+                    const newList = [addedTasks, ...prevTasks.slice()];
+
+                    // Update Redux state with the new order
+                    updateTaskOrder(newList);
+
+                    // Log the updated state
+                    console.log('Updated State:', newList);
+
+                    return newList;
+                });
+
+                //fetchAPI()
+                toast.success('Add successfully')
+            } else {
+                Object.values(res.data.detailedMessages).map((item, index) => {
+                    toast.error(item)
+                })
+            }
+        } catch (err) {
+            console.error("Error: ", err)
         }
+    }
+
+    const updateTaskOrder = (tasks) => {
+        localStorage.setItem('taskOrder', JSON.stringify(tasks.map((task) => task.id)));
     }
 
     const handleDrag = (result) => {
@@ -130,28 +140,60 @@ const ListTask = () => {
             // Insert the dragged task at the new position
             newList.splice(destinationIndex, 0, draggedTask);
 
-            // Update local storage with the new order
-            updateLocalStorageOrder(newList);
+            // Update the state with the new order
+            setListTask(newList);
+
+            // Update Redux state with the new order
+            updateTaskOrder(newList);
 
             return newList;
         })
     }
 
-    const updateLocalStorageOrder = (tasks) => {
-        // Store the order of tasks in local storage
-        localStorage.setItem('taskOrder', JSON.stringify(tasks.map(task => task.id)));
-    }
-
-    // Retrieve the order from local storage on component mount
     useEffect(() => {
-        const storedOrder = localStorage.getItem('taskOrder');
-        if (storedOrder) {
-            // Parse the stored order and update the task list accordingly
-            const orderArray = JSON.parse(storedOrder);
-            const orderedTasks = orderArray.map(id => listTask.find(task => task.id === id)).filter(Boolean);
-            setListTask(orderedTasks);
-        }
-    }, [])
+        const initializeListTask = async () => {
+            try {
+                let fetchedList = [];
+
+                // Fetch the data
+                const res = await getAllNoPaging(userId);
+
+                if (res.status === 200) {
+                    fetchedList = res.data;
+                    console.log('Fetched List:', fetchedList);
+                }
+
+                const storedOrder = localStorage.getItem('taskOrder');
+
+                // Update the task list based on the order
+                if (storedOrder) {
+                    const orderArray = JSON.parse(storedOrder);
+
+                    // Update the task list based on the order
+                    const orderedTasks = orderArray.map((id) =>
+                        fetchedList.find((task) => task.id === id)
+                    ).filter(Boolean);
+
+                    // Set the state with the ordered tasks
+                    setListTask(orderedTasks);
+
+                    console.log('Stored Order:', storedOrder);
+                    console.log('List Task:', orderedTasks);
+                } else {
+                    // If no order in localStorage, set the state with the fetched data
+                    setListTask(fetchedList);
+                    console.log('List Task:', fetchedList);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // Call the async function
+        initializeListTask();
+    }, [userId]);
 
     const msg = "Simple tasks"
     return (
@@ -226,9 +268,6 @@ const ListTask = () => {
                                         {!loading ? (
                                             <TableTaskList
                                                 listTask={filteredTasks}
-                                                setCurrentPage={setCurrentPage}
-                                                pageCount={pageCount}
-                                                currentPage={currentPage}
                                                 setListTask={setListTask}
                                                 providedDroppable={providedDroppable}
                                             />

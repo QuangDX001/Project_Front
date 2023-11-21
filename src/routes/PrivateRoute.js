@@ -26,7 +26,6 @@ const PrivateRoute = (pros) => {
             fetchStatus();
         }
 
-        fetchStatus()
 
     }, [dispatch, pros.userId, isAuthenticated])
 
