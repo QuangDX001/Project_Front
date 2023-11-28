@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Simple description: A web app with task management (include authentication and authorization)
+
+                    3 type of user: Admin, Moderator and User
+
 ## Back-end Projects
 
 Below is the back-end project code in Java Spring Boot
