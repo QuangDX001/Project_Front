@@ -18,7 +18,17 @@ const addTask = (title) => {
 
 const changeStatusTask = (taskId) => {
     return axios.put(`v1/tasks/${taskId}`);
-};
+}
+
+const changeTaskOrder = (tasks) => {
+
+    // let data = {
+    //     id: id,
+    //     position: position
+    // }
+
+    return axios.put("v1/tasks/updateOrder", tasks)
+}
 
 const deleteTaskById = (taskId, userId) => {
     return axios.delete(`v1/tasks/${taskId}?userId=${userId}`);
@@ -127,6 +137,7 @@ export {
     getAllNoPaging,
     addTask,
     changeStatusTask,
+    changeTaskOrder,
     deleteTaskById,
     deleteAllTasks,
     deleteDoneTask,

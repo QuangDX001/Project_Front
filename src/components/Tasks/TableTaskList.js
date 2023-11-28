@@ -32,7 +32,7 @@ const TableTaskList = (pros) => {
         if (res.status === 200) {
             const updatedTasks = listTask.map(item =>
                 (item.id === taskId ? { ...item, done: !item.done } : item))
-            pros.setListTask(updatedTasks)
+            pros.setSortedList(updatedTasks)
         } else {
             toast.error("Something is wrong")
         }
@@ -43,7 +43,7 @@ const TableTaskList = (pros) => {
         const currentTask = listTask.filter(item => item.id !== taskId)
         if (res.status === 200) {
             toast.success('Delete successfully')
-            pros.setListTask(currentTask)
+            pros.setSortedList(currentTask)
         } else {
             toast.error("Something is wrong")
         }
@@ -62,7 +62,7 @@ const TableTaskList = (pros) => {
                     const updatedListTask = listTask.map((item) =>
                         item.id === res.data.id ? res.data : item
                     );
-                    pros.setListTask(updatedListTask)
+                    pros.setSortedList(updatedListTask)
                     setEditTask({})
                     toast.success("Edit successfully")
                 } else {
