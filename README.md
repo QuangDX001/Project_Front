@@ -2,9 +2,21 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Simple description: A web app with task management (include authentication and authorization)
+Simple description:
 
-                    3 type of user: Admin, Moderator and User
+- A web app with task management (include authentication and authorization)
+
+- 3 type of user: Admin, Moderator and User
+
+For User:
+
+![Alt text](image.png)
+
+For Admin:
+
+![Alt text](image-1.png)
+
+For Mod: Although there is an authen and such for mod, this user currently just have a tempoary manage all tasks screen
 
 ## Back-end Projects
 
