@@ -94,7 +94,7 @@ const ListTask = () => {
                 })
             }
         } catch (err) {
-            toast.error("There is something wrong: ", err)
+            toast.error("There is something wrong ", err)
         }
     }
 
@@ -116,43 +116,50 @@ const ListTask = () => {
     }
 
     const handleDrag = (result) => {
-        //console.log(result)
+        console.log(result)
         if (!result.destination) return;
 
         const sourceIndex = result.source.index;
         const destinationIndex = result.destination.index;
 
-        // Get the dragged task
-        const draggedTask = filteredTasks[sourceIndex];
+        if (result.type === "TASK") {
+            // Get the dragged task
+            const draggedTask = filteredTasks[sourceIndex];
 
-        // Update the filtered task list without the dragged task
-        const updatedFilteredTasks = filteredTasks.filter((task, index) => index !== sourceIndex);
+            // Update the filtered task list without the dragged task
+            const updatedFilteredTasks = filteredTasks.filter((task, index) => index !== sourceIndex);
 
-        // Insert the dragged task at the destination index
-        updatedFilteredTasks.splice(destinationIndex, 0, draggedTask);
+            // Insert the dragged task at the destination index
+            updatedFilteredTasks.splice(destinationIndex, 0, draggedTask);
 
-        //Update the state with the new order
-        setSortedList((prevList) => {
-            // Create a copy of the previous list
-            const newList = [...prevList];
+            //Update the state with the new order
+            setSortedList((prevList) => {
+                // Create a copy of the previous list
+                const newList = [...prevList];
 
-            // Find the index of the dragged task in the original list
-            const originalIndex = prevList.findIndex((task) => task.id === draggedTask.id);
+                // Find the index of the dragged task in the original list
+                const originalIndex = prevList.findIndex((task) => task.id === draggedTask.id);
 
-            // Remove the dragged task from its original position
-            newList.splice(originalIndex, 1);
+                // Remove the dragged task from its original position
+                newList.splice(originalIndex, 1);
 
-            // Insert the dragged task at the new position
-            newList.splice(destinationIndex, 0, draggedTask);
+                // Insert the dragged task at the new position
+                newList.splice(destinationIndex, 0, draggedTask);
 
-            // Update the state with the new order
-            setSortedList(newList);
+                // Update the state with the new order
+                setSortedList(newList);
 
-            // Update state with the new order
-            changeTaskPositions(newList.map((task, index) => ({ id: task.id, position: index + 1 })));
+                // Update state with the new order
+                changeTaskPositions(newList.map((task, index) => ({ id: task.id, position: index + 1 })));
 
-            return newList;
-        })
+                return newList;
+            })
+        }
+
+        if (result.type === 'SUBTASK') {
+
+            // Update the state accordingly
+        }
     }
 
     const msg = "Simple tasks"
@@ -172,32 +179,52 @@ const ListTask = () => {
                     onAddTask={handleAddTask}
                 />
             </div>
-            <div className="filter-list-todo">
-                <div className="d-flex gap-3 mb-3">
-                    <button
-                        className={`button ${filter === 'all' ? 'active' : ''}`}
+
+            <ul className="nav nav-pills mb-4 pb-2 d-flex justify-content-center align-items-center" id="ex1" role="tablist">
+                <li className="nav-item" role="presentation">
+                    <span
+                        className={`nav-link ${filter === 'all' ? 'active' : ''}`}
+                        id="ex1-tab-1"
+                        data-mdb-toggle="tab"
+                        role="tab"
+                        aria-controls="ex1-tabs-1"
+                        aria-selected={filter === 'all'}
                         onClick={() => handleFilterChange('all')}
                     >
                         All
-                    </button>
-                    <button
-                        className={`button ${filter === 'completed' ? 'active' : ''}`}
-                        onClick={() => handleFilterChange("completed")}
+                    </span>
+                </li>
+                <li className="nav-item" role="presentation">
+                    <span
+                        className={`nav-link ${filter === 'completed' ? 'active' : ''}`}
+                        id="ex1-tab-2"
+                        data-mdb-toggle="tab"
+                        role="tab"
+                        aria-controls="ex1-tabs-2"
+                        aria-selected={filter === 'completed'}
+                        onClick={() => handleFilterChange('completed')}
                     >
                         Completed
-                    </button>
-                    <button
-                        className={`button ${filter === 'incomplete' ? 'active' : ''}`}
-                        onClick={() => handleFilterChange("incomplete")}
+                    </span>
+                </li>
+                <li className="nav-item" role="presentation">
+                    <span
+                        className={`nav-link ${filter === 'incomplete' ? 'active' : ''}`}
+                        id="ex1-tab-3"
+                        data-mdb-toggle="tab"
+                        role="tab"
+                        aria-controls="ex1-tabs-3"
+                        aria-selected={filter === 'incomplete'}
+                        onClick={() => handleFilterChange('incomplete')}
                     >
                         Active
-                    </button>
-                </div>
-            </div>
+                    </span>
+                </li>
+            </ul>
 
             <div className='list-todo' ref={scrollableContainerRef}>
                 <DragDropContext onDragEnd={handleDrag}>
-                    <Droppable droppableId="tasks"
+                    <Droppable droppableId="tasks" type="TASK"
                         renderClone={(provided, snapshot, rubric) => (
                             <div
                                 {...provided.draggableProps}
@@ -228,8 +255,8 @@ const ListTask = () => {
                                         {!loading ? (
                                             <TableTaskList
                                                 listTask={filteredTasks}
-                                                setSortedList={setSortedList}
                                                 providedDroppable={providedDroppable}
+                                                setSortedList={setSortedList}
                                             />
                                         ) : (
                                             <>

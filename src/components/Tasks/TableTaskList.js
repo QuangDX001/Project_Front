@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { changeStatusTask, deleteTaskById, editTaskDone } from '../../services/apiServices';
 import { toast } from 'react-toastify';
-import { Draggable } from '@hello-pangea/dnd';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
+import TableSubTaskList from './SubTasks/TableSubTaskList';
+import { Button } from 'react-bootstrap';
 
 const TableTaskList = (pros) => {
 
-    const { listTask, providedDroppable } = pros
+    const { listTask, providedDroppable, setSortedList } = pros;
     const [editTask, setEditTask] = useState({});
+    const [taskVisibility, setTaskVisibility] = useState({});
+    const [newSubTaskVisible, setNewSubTaskVisible] = useState(false);
+
     let isEmptyObj = Object.keys(editTask).length === 0;
 
     const account = useSelector((state) => state.user.account)
@@ -32,7 +37,7 @@ const TableTaskList = (pros) => {
         if (res.status === 200) {
             const updatedTasks = listTask.map(item =>
                 (item.id === taskId ? { ...item, done: !item.done } : item))
-            pros.setSortedList(updatedTasks)
+            setSortedList(updatedTasks)
         } else {
             toast.error("Something is wrong")
         }
@@ -43,7 +48,7 @@ const TableTaskList = (pros) => {
         const currentTask = listTask.filter(item => item.id !== taskId)
         if (res.status === 200) {
             toast.success('Delete successfully')
-            pros.setSortedList(currentTask)
+            setSortedList(currentTask)
         } else {
             toast.error("Something is wrong")
         }
@@ -62,7 +67,7 @@ const TableTaskList = (pros) => {
                     const updatedListTask = listTask.map((item) =>
                         item.id === res.data.id ? res.data : item
                     );
-                    pros.setSortedList(updatedListTask)
+                    setSortedList(updatedListTask)
                     setEditTask({})
                     toast.success("Edit successfully")
                 } else {
@@ -79,21 +84,44 @@ const TableTaskList = (pros) => {
 
     }
 
+    const toggleSubtaskVisibility = (taskId) => {
+
+        setTaskVisibility((prevVisibility) => ({
+            ...prevVisibility,
+            [taskId]: !prevVisibility[taskId],
+        }))
+
+        // Check if the task has subtasks
+        if (!pros.listTask.find(task => task.id === taskId)?.subTasks?.length) {
+            setNewSubTaskVisible(true)
+        }
+    }
+
     return (
         <>
             <ul className="tasks" {...providedDroppable.droppableProps}>
                 {listTask && listTask.length > 0 &&
                     listTask.map((task, i) => {
                         return (
-                            <Draggable key={task.id} draggableId={task.id.toString()} index={i}>
+                            <Draggable key={task.id} draggableId={task.id.toString()} index={i} type="TASK">
                                 {(providedDraggable) => {
                                     return (
-                                        <li ref={providedDraggable.innerRef} {...providedDraggable.draggableProps} {...providedDraggable.dragHandleProps} key={i}>
+                                        <li className='tasks-item' ref={providedDraggable.innerRef}
+                                            {...providedDraggable.draggableProps} {...providedDraggable.dragHandleProps} key={i}>
                                             {isEmptyObj === true ? (
                                                 <>
-                                                    <span className={task.done ? "completed" : "incomplete"}>
+                                                    <span className={task.done ? "completed" : "incomplete"} onClick={() => checkDoneTask(task.id)}>
                                                         {task.title}
                                                     </span>
+                                                    {/* Render subtasks only if they are visible */}
+                                                    {taskVisibility[task.id] && (
+                                                        <TableSubTaskList
+                                                            subtasks={task.subTasks}
+                                                            primaryTaskId={task.id}
+                                                            setSortedList={setSortedList}
+                                                            newSubTaskVisible={newSubTaskVisible}
+                                                        />
+                                                    )}
                                                 </>
                                             ) : (
                                                 <>
@@ -106,9 +134,20 @@ const TableTaskList = (pros) => {
                                                             />
                                                         </span>
                                                     ) : (
-                                                        <span className={task.done ? "completed" : "incomplete"}>
-                                                            {task.title}
-                                                        </span>
+                                                        <>
+                                                            <span className={task.done ? "completed" : "incomplete"} onClick={() => checkDoneTask(task.id)}>
+                                                                {task.title}
+                                                            </span>
+                                                            {/* Render subtasks only if they are visible */}
+                                                            {taskVisibility[task.id] && (
+                                                                <TableSubTaskList
+                                                                    subtasks={task.subTasks}
+                                                                    primaryTaskId={task.id}
+                                                                    setSortedList={setSortedList}
+                                                                    newSubTaskVisible={newSubTaskVisible}
+                                                                />
+                                                            )}
+                                                        </>
                                                     )}
                                                 </>
                                             )}
@@ -127,14 +166,19 @@ const TableTaskList = (pros) => {
                                             ) : (
                                                 <span className="actions">
                                                     {/* {!task.done && */}
-                                                    <span className="checkboxes">
+                                                    {/* <span className="checkboxes">
                                                         <input
                                                             type="checkbox"
                                                             checked={task.done ? "checked" : ""}
                                                             onChange={() => checkDoneTask(task.id)}
                                                         />
-                                                    </span>
+                                                    </span> */}
                                                     {/* } */}
+                                                    <span onClick={() => toggleSubtaskVisibility(task.id)}>
+                                                        {(
+                                                            taskVisibility[task.id] ? <i className="fas fa-caret-up"></i> : <i className="fas fa-caret-down"></i>
+                                                        )}
+                                                    </span>
                                                     <span
                                                         className="edit"
                                                         onClick={() => handleEditTask(task)}
@@ -160,7 +204,7 @@ const TableTaskList = (pros) => {
                     <h1 className="d-flex justify-content-center">No tasks available</h1>
                 )}
                 {providedDroppable.placeholder}
-            </ul>
+            </ul >
         </>
     )
 }

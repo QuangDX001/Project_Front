@@ -1,5 +1,7 @@
 import axios from "../utils/axiosCustomize"
 
+/* Task related API */
+
 const getAllTask = (pageNo, pageSize, userId, filter) => {
     return axios.get(`v1/tasks?pageNo=${pageNo}&pageSize=${pageSize}&userId=${userId}&filter=${filter}`)
 }
@@ -12,7 +14,6 @@ const addTask = (title) => {
     let data = {
         title: title,
     }
-
     return axios.post("v1/tasks/addTask", data)
 }
 
@@ -21,13 +22,46 @@ const changeStatusTask = (taskId) => {
 }
 
 const changeTaskOrder = (tasks) => {
-
-    // let data = {
-    //     id: id,
-    //     position: position
-    // }
-
     return axios.put("v1/tasks/updateOrder", tasks)
+}
+
+const editTaskDone = (taskId, title) => {
+    return axios.put(`v1/tasks/updateTask/${taskId}`, {
+        title: title
+    })
+}
+
+/* SubTask related API */
+
+const addSubTask = (title, taskId) => {
+    let data = {
+        title: title,
+        taskId: taskId
+    }
+    return axios.post("v1/subtasks/addTask", data)
+}
+
+const changeSubTaskOrder = (tasks, taskId) => {
+    let data = {
+        tasks: tasks,
+        taskId: taskId
+    }
+    return axios.put("v1/subtasks/updateOrder", data)
+}
+
+const editSubTaskDone = (taskId, title) => {
+    return axios.put(`v1/subtasks/updateTask/${taskId}`, {
+        title: title
+    })
+}
+
+const changeStatusSubTask = (taskId) => {
+    return axios.put(`v1/subtasks/${taskId}`);
+}
+/* Delete task API */
+
+const deleteSubTaskById = (taskId) => {
+    return axios.delete(`v1/subtasks/${taskId}`)
 }
 
 const deleteTaskById = (taskId, userId) => {
@@ -42,12 +76,7 @@ const deleteDoneTask = (userId) => {
     return axios.delete(`v1/completed/${userId}`)
 }
 
-const editTaskDone = (taskId, title) => {
-    return axios.put(`v1/tasks/updateTask/${taskId}`, {
-        title: title
-    })
-}
-
+/* User related API */
 
 const postLogin = (username, password) => {
     return axios.post(`auth/login`, {
@@ -105,22 +134,12 @@ const resetPassword = (email) => {
 }
 
 const resetPasswordAdmin = (username, newPassword) => {
-    // let data = {
-    //     newPassword: newPassword
-    // }
     return axios.put(`crud/resetPasswordForAdmin/${username}`, {
         newPassword: newPassword
     })
 }
 
 const putProfile = (id, firstName, lastName, address, phone) => {
-    // let data = {
-    //     firstName,
-    //     lastName,
-    //     address,
-    //     phone,
-    // }
-
     return axios.put(`crud/updateUser/${id}`, {
         firstName: firstName,
         lastName: lastName,
@@ -132,16 +151,22 @@ const putProfile = (id, firstName, lastName, address, phone) => {
 const putStatusUser = (id) => {
     return axios.put(`crud/changeEnableStatus/${id}`)
 }
+
 export {
     getAllTask,
     getAllNoPaging,
     addTask,
+    addSubTask,
     changeStatusTask,
+    changeStatusSubTask,
     changeTaskOrder,
+    changeSubTaskOrder,
     deleteTaskById,
+    deleteSubTaskById,
     deleteAllTasks,
     deleteDoneTask,
     editTaskDone,
+    editSubTaskDone,
     postLogin,
     postSignup,
     getProfile,
