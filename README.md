@@ -8,13 +8,19 @@ Simple description:
 
 - 3 type of user: Admin, Moderator and User
 
+Login Screen:
+
+![image](https://github.com/QuangDX001/Project_Front/assets/68740372/db2ed47c-3c3d-4580-88af-f39d072950c1)
+
 For User:
 
-![Alt text](image.png)
+![image-2](https://github.com/QuangDX001/Project_Front/assets/68740372/09485e95-ba07-4781-960a-d98f976c8bcf)
+
 
 For Admin:
 
-![Alt text](image-1.png)
+![image-1](https://github.com/QuangDX001/Project_Front/assets/68740372/004d8ace-b129-43c5-9734-fb5fd2a5e2e2)
+
 
 For Mod: Although there is an authen and such for mod, this user currently just have a tempoary manage all tasks screen
 
