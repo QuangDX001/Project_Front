@@ -116,7 +116,7 @@ const ListTask = () => {
     }
 
     const handleDrag = (result) => {
-        console.log(result)
+        // /console.log(result)
         if (!result.destination) return;
 
         const sourceIndex = result.source.index;

@@ -85,16 +85,14 @@ const TableTaskList = (pros) => {
     }
 
     const toggleSubtaskVisibility = (taskId) => {
+        console.log('Toggling visibility for task:', taskId);
 
         setTaskVisibility((prevVisibility) => ({
             ...prevVisibility,
             [taskId]: !prevVisibility[taskId],
         }))
 
-        // Check if the task has subtasks
-        if (!pros.listTask.find(task => task.id === taskId)?.subTasks?.length) {
-            setNewSubTaskVisible(true)
-        }
+        setNewSubTaskVisible(true)
     }
 
     return (
