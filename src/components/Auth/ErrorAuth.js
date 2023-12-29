@@ -29,14 +29,14 @@ const ErrorAuth = () => {
          <div class="error">
             <div class="error__title">403</div>
             <div class="error__subtitle">Hmmm...</div>
-            <div class="error__description">Xin hãy đăng xuất và đăng nhập lại để tiếp tục</div>
+            <div class="error__description">Please login agian to continue.</div>
             {/* <button class="error__button error__button--active">LOGIN</button> */}
             <button class="error__button" onClick={() => navigate("/")}>
                Trang chủ
             </button>
-            <button class="error__button" onClick={() => handleLogOut()}>
+            {/* <button class="error__button" onClick={() => handleLogOut()}>
                Đăng xuất
-            </button>
+            </button> */}
          </div>
 
          <div class="astronaut">

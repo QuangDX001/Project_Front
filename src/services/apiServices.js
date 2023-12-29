@@ -3,7 +3,7 @@ import axios from "../utils/axiosCustomize"
 /* Task related API */
 
 const getAllTask = (pageNo, pageSize, userId, filter) => {
-    return axios.get(`v1/tasks?pageNo=${pageNo}&pageSize=${pageSize}&userId=${userId}&filter=${filter}`)
+    return axios.get(`v1/tasksForMods?pageNo=${pageNo}&pageSize=${pageSize}`)
 }
 
 const getAllNoPaging = (userId, filter) => {
@@ -41,12 +41,8 @@ const addSubTask = (title, taskId) => {
     return axios.post("v1/subtasks/addTask", data)
 }
 
-const changeSubTaskOrder = (tasks, taskId) => {
-    let data = {
-        tasks: tasks,
-        taskId: taskId
-    }
-    return axios.put("v1/subtasks/updateOrder", data)
+const changeSubTaskOrder = (tasks) => {
+    return axios.put("v1/subtasks/updateOrder", tasks)
 }
 
 const editSubTaskDone = (taskId, title) => {

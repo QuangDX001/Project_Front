@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom';
 import { getStatus } from '../services/apiServices';
-import { updateUser } from '../redux/action/userAction';
+import { doLogOut, updateUser } from '../redux/action/userAction';
+import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 
 const PrivateRoute = (pros) => {
     const account = useSelector((state) => state.user.account)
@@ -58,6 +60,19 @@ const PrivateRoute = (pros) => {
     if (isAuthenticated === false) {
         return <Navigate to="/login"></Navigate>;
     }
+
+    // Check token expiration
+    const decodedToken = jwtDecode(account.token);
+    const currentTime = Date.now() / 1000;
+
+    if (decodedToken.exp < currentTime) {
+        // Token expired, dispatch logout action
+        dispatch(doLogOut());
+        toast.error("Your token is expired. Please log in again")
+        return <Navigate to="/login" />;
+    }
+
+
     return <>{pros.children}</>;
 };
 
